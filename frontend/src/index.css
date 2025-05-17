@@ -1,0 +1,57 @@
+@import "tailwindcss";
+@import "./typography.css";
+@custom-variant dark (&:where(.dark, .dark *));
+
+
+@layer base {
+  body {
+    font-family: "Vazir";
+    font-weight: 700;
+  }
+}
+
+@theme {
+   --color-primary-900: oklch(0.624 0.278 266.92);
+    --color-primary-800: oklch(0.652 0.253 266.84);
+    --color-primary-700: oklch(0.677 0.229 266.94);
+    --color-primary-600: oklch(0.702 0.207 267.00);
+    --color-primary-500: oklch(0.726 0.185 267.16);
+    --color-primary-400: oklch(0.750 0.165 267.16);
+    --color-primary-300: oklch(0.773 0.147 267.21);
+    --color-primary-200: oklch(0.796 0.129 267.34);
+    --color-primary-100: oklch(0.820 0.111 267.45);
+    --color-primary-50:  oklch(0.837 0.100 267.40);
+
+    --color-secondary-900: oklch(0.197 0.042 284.20);
+    --color-secondary-800: oklch(0.262 0.039 284.88);
+    --color-secondary-700: oklch(0.335 0.035 284.60);
+    --color-secondary-600: oklch(0.393 0.030 284.62);
+    --color-secondary-500: oklch(0.497 0.024 284.84);
+    --color-secondary-400: oklch(0.620 0.017 284.82);
+    --color-secondary-300: oklch(0.752 0.010 284.78);
+    --color-secondary-200: oklch(0.814 0.006 284.76);
+    --color-secondary-100: oklch(0.891 0.003 284.68);
+    --color-secondary-50:  oklch(0.938 0.002 284.66);
+    --color-secondary-0:   oklch(1 0 0);
+
+    --color-success: oklch(0.739 0.202 152.66);
+    --color-warning: oklch(0.816 0.200 78.99);
+    --color-error:   oklch(0.657 0.261 26.80);
+    --color-red-500: oklch(0.621 0.260 29.26);
+    --color-red-300: oklch(0.777 0.202 29.32);
+    
+    /* * Dark mode * */
+      --color-secondary-dark-900: oklch(0.938 0.002 284.66);
+    --color-secondary-dark-800: oklch(0.891 0.003 284.68);
+    --color-secondary-dark-700: oklch(0.814 0.006 284.76);
+    --color-secondary-dark-600: oklch(0.752 0.010 284.78);
+    --color-secondary-dark-500: oklch(0.620 0.017 284.82);
+    --color-secondary-dark-400: oklch(0.497 0.024 284.84);
+    --color-secondary-dark-300: oklch(0.393 0.030 284.62);
+    --color-secondary-dark-200: oklch(0.335 0.035 284.60);
+    --color-secondary-dark-100: oklch(0.262 0.039 284.88);
+    --color-secondary-dark-50:  oklch(0.197 0.042 284.20);
+    --color-secondary-dark-0:   oklch(0.158 0.047 284.12);
+
+    --backdrop-color: oklch(0 0 0);
+}
