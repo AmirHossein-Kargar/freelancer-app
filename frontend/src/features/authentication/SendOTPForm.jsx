@@ -1,11 +1,30 @@
 import { Button } from "@mui/material";
 import TextField from "@mui/material/TextField";
-import { useState } from "react";
-export default function SendOTPForm() {
-  const [phoneNumber, setPhoneNumber] = useState("");
+import { useMutation } from "@tanstack/react-query";
+import { getOtp } from "../../services/authService";
+import Loading from "../../ui/Loading";
+import toast from "react-hot-toast";
+
+export default function SendOTPForm({ setStep, phoneNumber, onChange }) {
+  const { isPending, error, data, mutateAsync } = useMutation({
+    mutationFn: getOtp,
+  });
+  const sendOtpHandler = async (e) => {
+    e.preventDefault();
+    try {
+      const data = await mutateAsync({ phoneNumber });
+      toast.success(data.message, {
+        duration: 4000,
+      });
+      setStep(2);
+    } catch (error) {
+      console.log(error?.response?.data?.message);
+    }
+  };
+
   return (
     <div>
-      <form className="flex flex-col gap-4">
+      <form className="flex flex-col gap-4" onSubmit={sendOtpHandler}>
         <TextField
           autoComplete="off"
           variant="standard"
@@ -15,7 +34,7 @@ export default function SendOTPForm() {
           id="phone-number-input"
           value={phoneNumber}
           helperText="شماره موبایل باید 11 رقم باشد"
-          onChange={(e) => setPhoneNumber(e.target.value)}
+          onChange={onChange}
           sx={{
             direction: "ltr",
             "& .MuiInputLabel-root": {
@@ -36,16 +55,23 @@ export default function SendOTPForm() {
             },
           }}
         />
-        <Button
-          variant="contained"
-          size="small"
-          sx={{
-            width: "fit-content",
-            margin: "0 auto",
-          }}
-        >
-          ارسال کد تایید
-        </Button>
+        <>
+          {isPending ? (
+            <Loading />
+          ) : (
+            <Button
+              type="submit"
+              variant="contained"
+              size="small"
+              sx={{
+                width: "fit-content",
+                margin: "0 auto",
+              }}
+            >
+              ارسال کد تایید
+            </Button>
+          )}
+        </>
       </form>
     </div>
   );
