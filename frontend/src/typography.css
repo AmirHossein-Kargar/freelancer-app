@@ -18,3 +18,15 @@
   font-weight: 900;
   src: url("../public/fonts/Vazirmatn-Black.woff2") format("woff2");
 }
+
+@font-face {
+  font-family: "Inter";
+  font-style: bold;
+  src: url("../public/fonts/Inter_18pt-Bold.ttf");
+}
+
+@font-face {
+  font-family: "Poppins";
+  font-style: light;
+  src: url("../public/fonts/Poppins-Medium.ttf");
+}
