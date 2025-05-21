@@ -7,7 +7,7 @@ export default function Completed() {
         <img src="../../../public/images/completed.svg" alt="" />
       </div>
       <div>
-        <h2 className="md:text-xl">Success!</h2>
+        <h2 className="md:text-xl dark:text-white">Success!</h2>
         <p className="text-sm mt-2 mb-8 w-[300px] md:w-auto">
           Congratulations! You have been successfully authenticated
         </p>

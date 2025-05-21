@@ -1,19 +1,34 @@
 import { Button } from "@mui/material";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import OTPInput from "react-otp-input";
 import { useMutation } from "@tanstack/react-query";
 import { checkOtp } from "../../services/authService";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
-export default function CheckOTPForm({ phoneNumber, setStep }) {
+// * OTP TIMER
+const RESEND_OTP = 90;
+
+export default function CheckOTPForm({ phoneNumber, onBack, onResendOtp }) {
   const navigate = useNavigate();
   const [otp, setOtp] = useState("");
+  const [time, setTime] = useState(RESEND_OTP);
 
   const { isPending, error, data, mutateAsync } = useMutation({
     mutationFn: checkOtp,
   });
+
+  useEffect(() => {
+    const timer =
+      time > 0 &&
+      setInterval(() => {
+        setTime((t) => t - 1);
+      }, 1000);
+    return () => {
+      if (timer) clearInterval(timer);
+    };
+  }, [time]);
 
   // * Handles OTP verification, navigates user based on activation status, and displays notifications.
   const checkOtpHandler = async (e) => {
@@ -38,20 +53,21 @@ export default function CheckOTPForm({ phoneNumber, setStep }) {
   return (
     <div className="select-none">
       <KeyboardBackspaceIcon
-        onClick={() => setStep(1)}
+        onClick={onBack}
         sx={{
           cursor: "pointer",
           color: "#CECECE",
         }}
       />
+
       <form action="" className="mt-8" onSubmit={checkOtpHandler}>
         <div className="md:text-center">
-          <h2>Verification Code</h2>
+          <h2 className="dark:text-white">Verification Code</h2>
           <p className="text-sm font-light my-4">
             We have sent the verification code to your email address
           </p>
         </div>
-        <div className="mb-8 ">
+        <div className="mb-4 ">
           <OTPInput
             value={otp}
             onChange={setOtp}
@@ -82,6 +98,15 @@ export default function CheckOTPForm({ phoneNumber, setStep }) {
             containerStyle="flex gap-x-2 justify-center "
             renderSeparator={<span className="w-2"></span>}
           />
+          <div className="flex justify-center items-center mt-4">
+            {time > 0 ? (
+              <p>{time} Remaining</p>
+            ) : (
+              <Button size="small" onClick={onResendOtp}>
+                Send Again
+              </Button>
+            )}
+          </div>
         </div>
 
         <div className="flex">

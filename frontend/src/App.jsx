@@ -10,7 +10,7 @@ export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <Toaster />
-      <div className="container mt-4 flex justify-center items-center mx-auto">
+      <div className="container mt-4 flex justify-center items-center mx-auto ">
         <Routes>
           <Route path="/auth" element={<Auth />} />
           <Route path="/completed" element={<Completed/>}/>
