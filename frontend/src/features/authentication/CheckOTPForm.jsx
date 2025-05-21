@@ -6,6 +6,7 @@ import { useMutation } from "@tanstack/react-query";
 import { checkOtp } from "../../services/authService";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import Loading from "../../ui/Loading";
 
 // * OTP TIMER
 const RESEND_OTP = 90;
@@ -14,6 +15,7 @@ export default function CheckOTPForm({ phoneNumber, onBack, onResendOtp }) {
   const navigate = useNavigate();
   const [otp, setOtp] = useState("");
   const [time, setTime] = useState(RESEND_OTP);
+  const [isLoading, setIsLoading] = useState(false);
 
   const { isPending, error, data, mutateAsync } = useMutation({
     mutationFn: checkOtp,
@@ -34,6 +36,7 @@ export default function CheckOTPForm({ phoneNumber, onBack, onResendOtp }) {
   const checkOtpHandler = async (e) => {
     e.preventDefault();
     try {
+      setIsLoading(true);
       const { data } = await mutateAsync({ phoneNumber, otp });
       toast.success(data.message);
       const { user } = data;
@@ -43,10 +46,13 @@ export default function CheckOTPForm({ phoneNumber, onBack, onResendOtp }) {
         if (user.role === "OWNER") navigate("/owner");
         if (user.role === "FREELANCER") navigate("/freelancer");
       } else {
-        navigate("/completed");
+        setTimeout(() => {
+          navigate("/completed");
+        }, 3000);
       }
     } catch (error) {
       toast.error(error?.response?.data?.message || "خطایی رخ داده است");
+      setIsLoading(false);
     }
   };
 
@@ -56,7 +62,7 @@ export default function CheckOTPForm({ phoneNumber, onBack, onResendOtp }) {
         onClick={onBack}
         sx={{
           cursor: "pointer",
-          color: "#CECECE",
+          color: "var(--color-secondary)",
         }}
       />
 
@@ -81,11 +87,12 @@ export default function CheckOTPForm({ phoneNumber, onBack, onResendOtp }) {
                   height: "2.5rem",
                   border: "1px solid #9ca3af",
                   borderRadius: "10px",
-                  color: "#000",
                   fontSize: "1rem",
                   textAlign: "center",
                   outline: "none",
                   transition: "border-color 0.2s",
+                  background: "transparent",
+                  color: document.documentElement.classList.contains("dark") ? "var(--color-secondary)" : "#000",
                 }}
                 onFocus={(e) => {
                   e.target.style.borderColor = "#FF8D4D";
@@ -109,23 +116,27 @@ export default function CheckOTPForm({ phoneNumber, onBack, onResendOtp }) {
           </div>
         </div>
 
-        <div className="flex">
-          <Button
-            size="large"
-            variant="contained"
-            color="primary"
-            type="submit"
-            fullWidth
-            sx={{
-              color: "#fff",
-              width: { xs: "100%", md: "auto" },
-              display: "block",
-              marginLeft: { md: "auto", xs: 0 },
-              marginRight: { md: "auto", xs: 0 },
-            }}
-          >
-            Confirm
-          </Button>
+        <div>
+          {isLoading ? (
+            <Loading />
+          ) : (
+            <Button
+              size="large"
+              variant="contained"
+              color="primary"
+              type="submit"
+              fullWidth
+              sx={{
+                color: "#fff",
+                width: { xs: "100%", md: "auto" },
+                display: "block",
+                marginLeft: { md: "auto", xs: 0 },
+                marginRight: { md: "auto", xs: 0 },
+              }}
+            >
+              Confirm
+            </Button>
+          )}
         </div>
       </form>
     </div>

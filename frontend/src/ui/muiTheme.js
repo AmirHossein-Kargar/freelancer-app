@@ -1,9 +1,12 @@
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { createTheme } from "@mui/material/styles";
+
+const isDarkMode = document.documentElement.classList.contains("dark");
 
 export const theme = createTheme({
   palette: {
+    mode: isDarkMode ? "dark" : "light",
     primary: {
-      main: "#FF8D4D", 
+      main: "#FF8D4D",
     },
     secondary: {
       main: "#dc004e",
@@ -16,7 +19,7 @@ export const theme = createTheme({
           borderRadius: "1rem",
         },
         containedPrimary: {
-          '&:hover': {
+          "&:hover": {
             backgroundColor: "#e6763d",
           },
         },
