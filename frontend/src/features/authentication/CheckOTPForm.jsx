@@ -7,11 +7,17 @@ import { checkOtp } from "../../services/authService";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import Loading from "../../ui/Loading";
+import ModeOutlinedIcon from "@mui/icons-material/ModeOutlined";
 
 // * OTP TIMER
 const RESEND_OTP = 90;
 
-export default function CheckOTPForm({ phoneNumber, onBack, onResendOtp }) {
+export default function CheckOTPForm({
+  phoneNumber,
+  onBack,
+  onResendOtp,
+  otpResponse,
+}) {
   const navigate = useNavigate();
   const [otp, setOtp] = useState("");
   const [time, setTime] = useState(RESEND_OTP);
@@ -38,6 +44,8 @@ export default function CheckOTPForm({ phoneNumber, onBack, onResendOtp }) {
     try {
       setIsLoading(true);
       const { data } = await mutateAsync({ phoneNumber, otp });
+      console.log(otpResponse);
+
       toast.success(data.message);
       const { user } = data;
 
@@ -69,8 +77,14 @@ export default function CheckOTPForm({ phoneNumber, onBack, onResendOtp }) {
       <form action="" className="mt-8" onSubmit={checkOtpHandler}>
         <div className="md:text-center">
           <h2 className="dark:text-white">Verification Code</h2>
+          <div className="mt-2 flex items-center md:justify-center">
+            {otpResponse && <p>code sent to {otpResponse?.phoneNumber}</p>}
+            <button className="cursor-pointer ml-2" onClick={onBack}>
+              <ModeOutlinedIcon fontSize="small" />
+            </button>
+          </div>
           <p className="text-sm font-light my-4">
-            We have sent the verification code to your email address
+            We have sent the verification code to your PhoneNumber
           </p>
         </div>
         <div className="mb-4 ">
@@ -92,7 +106,9 @@ export default function CheckOTPForm({ phoneNumber, onBack, onResendOtp }) {
                   outline: "none",
                   transition: "border-color 0.2s",
                   background: "transparent",
-                  color: document.documentElement.classList.contains("dark") ? "var(--color-secondary)" : "#000",
+                  color: document.documentElement.classList.contains("dark")
+                    ? "var(--color-secondary)"
+                    : "#000",
                 }}
                 onFocus={(e) => {
                   e.target.style.borderColor = "#FF8D4D";
