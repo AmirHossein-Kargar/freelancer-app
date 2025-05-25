@@ -8,8 +8,8 @@ export const baseThemeOptions = {
       main: mainColor,
     },
     secondary: {
-        main: secondaryColor,
-    }
+      main: secondaryColor,
+    },
   },
   components: {
     MuiOutlinedInput: {

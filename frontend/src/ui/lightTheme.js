@@ -1,11 +1,10 @@
-// theme/lightTheme.ts
 import { createTheme } from "@mui/material/styles";
 import { baseThemeOptions } from "./baseThemeOptions";
 
 const mainColor = "#FF8D4D";
 
 export const lightTheme = createTheme({
-    ...baseThemeOptions,
+  ...baseThemeOptions,
   palette: {
     ...baseThemeOptions.palette,
     mode: "light",
@@ -14,18 +13,16 @@ export const lightTheme = createTheme({
     },
   },
   components: {
-    ...baseThemeOptions.components
-    //  MuiButton: {
-    //   styleOverrides: {
-    //     root: {
-    //       color: "#fff"
-    //     },
-    //     containedPrimary: {
-    //       "&:hover": {
-    //         backgroundColor: "#e6763d",
-    //       },
-    //     },
-    //   },
-    // },
+    ...baseThemeOptions.components,
+    MuiFormLabel: {
+      styleOverrides: {
+        root: {
+          color: "#000",
+          "&.Mui-focused": {
+            color: "#000",
+          },
+        },
+      },
+    },
   },
 });

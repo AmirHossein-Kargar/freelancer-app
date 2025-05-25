@@ -14,8 +14,14 @@ import MailIcon from "@mui/icons-material/Mail";
 export default function CompleteProfileForm() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [role, setRole] = useState("");
+  
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  }
+
   return (
-    <form action="" className="container p-8 select-none">
+    <form action="" className="container p-8 select-none" onSubmit={handleSubmit}>
       <section className="flex justify-center items-center">
         <img
           className="w-[300px] h-[246px]"
@@ -36,7 +42,13 @@ export default function CompleteProfileForm() {
           type="text"
           InputProps={{
             startAdornment: (
-              <span style={{ paddingRight: 8, display: "flex", alignItems: "center" }}>
+              <span
+                style={{
+                  paddingRight: 8,
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
                 <PersonIcon color="primary" />
               </span>
             ),
@@ -52,7 +64,13 @@ export default function CompleteProfileForm() {
           type="email"
           InputProps={{
             startAdornment: (
-              <span style={{ paddingRight: 8, display: "flex", alignItems: "center" }}>
+              <span
+                style={{
+                  paddingRight: 8,
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
                 <MailIcon color="primary" />
               </span>
             ),
@@ -60,13 +78,21 @@ export default function CompleteProfileForm() {
         />
         <FormControl>
           <FormLabel>Role</FormLabel>
-          <RadioGroup row defaultValue="female" name="radio-buttons-group">
+          <RadioGroup row defaultValue="Client">
             <FormControlLabel
               value="Freelancer"
               control={<Radio />}
               label="Freelancer"
+              onChange={(e) => setRole(e.target.value)}
+              checked={role === "Freelancer"}
+              />
+            <FormControlLabel
+              value="Client"
+              control={<Radio />}
+              label="Client"
+              onChange={(e) => setRole(e.target.value)}
+              checked={role === "Client"}
             />
-            <FormControlLabel value="Owner" control={<Radio />} label="Owner" />
           </RadioGroup>
         </FormControl>
         <Button variant="contained" sx={{ color: "#fff" }} className="md:w-1/2">

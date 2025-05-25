@@ -4,7 +4,7 @@ import { baseThemeOptions } from "./baseThemeOptions";
 const mainColor = "#FF8D4D";
 
 export const darkTheme = createTheme({
-    ...baseThemeOptions,
+  ...baseThemeOptions,
   palette: {
     ...baseThemeOptions.palette,
     mode: "dark",
@@ -15,11 +15,21 @@ export const darkTheme = createTheme({
   components: {
     ...baseThemeOptions.components,
     MuiTypography: {
-        styleOverrides: {
-            root: {
-            color: "#fff"    
-            }
-        }
-    }
+      styleOverrides: {
+        root: {
+          color: "#fff",
+        },
+      },
+    },
+    MuiFormLabel: {
+      styleOverrides: {
+        root: {
+          color: "#fff",
+          "&.Mui-focused": {
+            color: "#fff",
+          },
+        },
+      },
+    },
   },
 });
