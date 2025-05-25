@@ -1,6 +1,6 @@
 @import "tailwindcss";
 @import "./typography.css";
-@custom-variant dark (&:where(.dark, .dark *));
+
 
 
 @layer base {
@@ -21,9 +21,7 @@
     color: var(--color-paragraph);
     font-family: "Poppins";
   }
-  span {
-    color: #fff;
-  }
+  
 }
 
 @theme {

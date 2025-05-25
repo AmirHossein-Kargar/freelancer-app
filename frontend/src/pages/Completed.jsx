@@ -1,6 +1,8 @@
 import { Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 export default function Completed() {
+  const navigate = useNavigate();
   return (
     <div className="flex items-center justify-center flex-col text-center select-none h-screen">
       <div className="mb-12">
@@ -13,6 +15,7 @@ export default function Completed() {
         </p>
       </div>
       <Button
+        onClick={() => navigate("/complete-profile")}
         size="large"
         variant="contained"
         sx={{

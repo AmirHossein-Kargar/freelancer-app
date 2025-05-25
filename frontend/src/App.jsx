@@ -1,21 +1,24 @@
-import { Route, Routes } from "react-router-dom";
-import Auth from "./pages/auth";
 import { Toaster } from "react-hot-toast";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import Completed from "./features/authentication/Completed";
+import AppRoutes from "./Routes";
+import { ThemeProvider, useMediaQuery } from "@mui/material";
+import { darkTheme } from "./ui/darkTheme";
+import { lightTheme } from "./ui/lightTheme";
+import { useMemo } from "react";
 
 const queryClient = new QueryClient();
 
 export default function App() {
+  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
+
+  const theme = useMemo(() => (prefersDarkMode ? darkTheme : lightTheme), [prefersDarkMode]);
+
   return (
     <QueryClientProvider client={queryClient}>
-      <Toaster />
-      <div className="container mt-4 flex justify-center items-center mx-auto ">
-        <Routes>
-          <Route path="/auth" element={<Auth />} />
-          <Route path="/completed" element={<Completed/>}/>
-        </Routes>
-      </div>
+      <ThemeProvider theme={theme}>
+        <Toaster />
+        <AppRoutes />
+      </ThemeProvider>
     </QueryClientProvider>
   );
 }

@@ -21,9 +21,9 @@ export default function CheckOTPForm({
   const navigate = useNavigate();
   const [otp, setOtp] = useState("");
   const [time, setTime] = useState(RESEND_OTP);
-  const [isLoading, setIsLoading] = useState(false);
+  const [showDelayLoading, setShowDelayLoading] = useState(false);
 
-  const { isPending, error, data, mutateAsync } = useMutation({
+  const { isPending, mutateAsync } = useMutation({
     mutationFn: checkOtp,
   });
 
@@ -42,10 +42,7 @@ export default function CheckOTPForm({
   const checkOtpHandler = async (e) => {
     e.preventDefault();
     try {
-      setIsLoading(true);
       const { data } = await mutateAsync({ phoneNumber, otp });
-      console.log(otpResponse);
-
       toast.success(data.message);
       const { user } = data;
 
@@ -54,18 +51,19 @@ export default function CheckOTPForm({
         if (user.role === "OWNER") navigate("/owner");
         if (user.role === "FREELANCER") navigate("/freelancer");
       } else {
+        setShowDelayLoading(true);
         setTimeout(() => {
+          setShowDelayLoading(false);
           navigate("/completed");
         }, 3000);
       }
     } catch (error) {
-      toast.error(error?.response?.data?.message || "خطایی رخ داده است");
-      setIsLoading(false);
+      toast.error(error?.response?.data?.message);
     }
   };
 
   return (
-    <div className="select-none">
+    <div className="select-none py-8">
       <KeyboardBackspaceIcon
         onClick={onBack}
         sx={{
@@ -80,7 +78,18 @@ export default function CheckOTPForm({
           <div className="mt-2 flex items-center md:justify-center">
             {otpResponse && <p>code sent to {otpResponse?.phoneNumber}</p>}
             <button className="cursor-pointer ml-2" onClick={onBack}>
-              <ModeOutlinedIcon fontSize="small" />
+              <ModeOutlinedIcon
+                fontSize="small"
+                sx={{
+                  color: {
+                    xs: "inherit",
+                    "@media (prefers-color-scheme: dark)": {
+                      color: "#fff",
+                    },
+                  },
+                }}
+                className="dark:text-white"
+              />
             </button>
           </div>
           <p className="text-sm font-light my-4">
@@ -106,15 +115,29 @@ export default function CheckOTPForm({
                   outline: "none",
                   transition: "border-color 0.2s",
                   background: "transparent",
-                  color: document.documentElement.classList.contains("dark")
-                    ? "var(--color-secondary)"
-                    : "#000",
+                  color:
+                    window.matchMedia &&
+                    window.matchMedia("(prefers-color-scheme: dark)").matches
+                      ? "#fff"
+                      : "#000",
                 }}
                 onFocus={(e) => {
                   e.target.style.borderColor = "#FF8D4D";
+                  if (
+                    window.matchMedia &&
+                    window.matchMedia("(prefers-color-scheme: dark)").matches
+                  ) {
+                    e.target.style.color = "#fff";
+                  }
                 }}
                 onBlur={(e) => {
                   e.target.style.borderColor = "#9ca3af";
+                  if (
+                    window.matchMedia &&
+                    window.matchMedia("(prefers-color-scheme: dark)").matches
+                  ) {
+                    e.target.style.color = "#fff";
+                  }
                 }}
               />
             )}
@@ -125,7 +148,11 @@ export default function CheckOTPForm({
             {time > 0 ? (
               <p>{time} Remaining</p>
             ) : (
-              <Button size="small" onClick={onResendOtp}>
+              <Button size="small" onClick={onResendOtp} color="primary" sx={{
+                "&:hover": {
+                  backgroundColor: "transparent",
+                }
+              }}>
                 Send Again
               </Button>
             )}
@@ -133,7 +160,7 @@ export default function CheckOTPForm({
         </div>
 
         <div>
-          {isLoading ? (
+          {isPending || showDelayLoading ? (
             <Loading />
           ) : (
             <Button

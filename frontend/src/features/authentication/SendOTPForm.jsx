@@ -55,7 +55,7 @@ export default function SendOTPForm({
               fullWidth
               size="large"
             >
-              <span> Continue</span>
+              <span className="text-white"> Continue</span>
             </Button>
           )}
         </div>
