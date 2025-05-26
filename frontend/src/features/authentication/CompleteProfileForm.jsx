@@ -10,18 +10,50 @@ import {
 import TextField from "@mui/material/TextField";
 import PersonIcon from "@mui/icons-material/Person";
 import MailIcon from "@mui/icons-material/Mail";
+import { useMutation } from "@tanstack/react-query";
+import { completeProfile } from "../../services/authService";
+import toast from "react-hot-toast";
+import Loading from "../../ui/Loading";
+import { useNavigate } from "react-router-dom";
 
 export default function CompleteProfileForm() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [role, setRole] = useState("");
-  
-  const handleSubmit = (e) => {
-    e.preventDefault();
+
+  const [showDelayLoading, setShowDelayLoading] = useState(false);
+
+  const navigate = useNavigate();
+
+  const { mutateAsync, isPending } = useMutation({
+    mutationFn: completeProfile,
+  });
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  try {
+    const { data } = await mutateAsync({ name, email, role });
+    toast.success(data.message);
+
+    const userRole = data.user?.role?.toUpperCase();
+
+
+    setShowDelayLoading(true);
+    setTimeout(() => {
+      setShowDelayLoading(false);
+
+      if (userRole === "OWNER") return navigate("/owner");
+      if (userRole === "FREELANCER") return navigate("/freelancer");
+
+      navigate("/");
+    }, 3000);
+  } catch (error) {
+    toast.error(error?.response?.data?.message || "Something went wrong");
   }
+};
 
   return (
-    <form action="" className="container p-8 select-none" onSubmit={handleSubmit}>
+    <form action="" className="container p-8 select-none">
       <section className="flex justify-center items-center">
         <img
           className="w-[300px] h-[246px]"
@@ -78,26 +110,40 @@ export default function CompleteProfileForm() {
         />
         <FormControl>
           <FormLabel>Role</FormLabel>
-          <RadioGroup row defaultValue="Client">
+          <RadioGroup
+            row
+            value={role}
+            defaultValue="Client"
+            onChange={(e) => setRole(e.target.value)}
+          >
             <FormControlLabel
-              value="Freelancer"
+              value="FREELANCER"
               control={<Radio />}
               label="Freelancer"
-              onChange={(e) => setRole(e.target.value)}
-              checked={role === "Freelancer"}
-              />
+              // checked={role === "FREELANCER"}
+            />
             <FormControlLabel
-              value="Client"
+              value="OWNER"
               control={<Radio />}
               label="Client"
-              onChange={(e) => setRole(e.target.value)}
-              checked={role === "Client"}
+              // onChange={(e) => setRole(e.target.value)}
+              // checked={role === "OWNER"}
             />
           </RadioGroup>
         </FormControl>
-        <Button variant="contained" sx={{ color: "#fff" }} className="md:w-1/2">
-          Confirm
-        </Button>
+
+        {showDelayLoading || isPending ? (
+          <Loading />
+        ) : (
+          <Button
+            variant="contained"
+            sx={{ color: "#fff" }}
+            className="md:w-1/2"
+            onClick={handleSubmit}
+          >
+            Confirm
+          </Button>
+        )}
       </div>
     </form>
   );

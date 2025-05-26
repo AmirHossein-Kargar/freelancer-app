@@ -9,3 +9,7 @@ export function getOtp(phoneNumber) {
 export function checkOtp({phoneNumber, otp}) {
     return http.post('/user/check-otp', {phoneNumber, otp}).then((data) => data.data)
 }
+// * send complete profile data
+export function completeProfile(data) {
+    return http.post('/user/complete-profile', data).then((data) => data.data)
+}

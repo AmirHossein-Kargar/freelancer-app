@@ -46,17 +46,24 @@ export default function CheckOTPForm({
       toast.success(data.message);
       const { user } = data;
 
-      if (data.user.isActive) {
-        // * push to panel
-        if (user.role === "OWNER") navigate("/owner");
-        if (user.role === "FREELANCER") navigate("/freelancer");
-      } else {
+      // * if user is not active, navigate to complete profile
+      if (!data.user.isActive) {
         setShowDelayLoading(true);
         setTimeout(() => {
           setShowDelayLoading(false);
           navigate("/completed");
         }, 3000);
+        return;
       }
+
+      setShowDelayLoading(true);
+      setTimeout(() => {
+        setShowDelayLoading(false);
+        if (user.role === "OWNER") return navigate("/owner");
+        if (user.role === "FREELANCER") return navigate("/freelancer");
+        // * fallback
+        navigate("/");
+      }, 3000);
     } catch (error) {
       toast.error(error?.response?.data?.message);
     }
@@ -148,11 +155,16 @@ export default function CheckOTPForm({
             {time > 0 ? (
               <p>{time} Remaining</p>
             ) : (
-              <Button size="small" onClick={onResendOtp} color="primary" sx={{
-                "&:hover": {
-                  backgroundColor: "transparent",
-                }
-              }}>
+              <Button
+                size="small"
+                onClick={onResendOtp}
+                color="primary"
+                sx={{
+                  "&:hover": {
+                    backgroundColor: "transparent",
+                  },
+                }}
+              >
                 Send Again
               </Button>
             )}
