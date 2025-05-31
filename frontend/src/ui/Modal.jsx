@@ -1,12 +1,17 @@
 import { Button } from "@mui/material";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
+import useOutsideClick from "../hooks/useOutsideClick";
 
 export default function Modal({ open, onClose, title, children }) {
+
+const ref = useOutsideClick(onClose)
+
   if (!open) return null;
 
   return (
     <div className="fixed inset-0 z-50 bg-black/5 backdrop-blur-sm">
       <div
+        ref={ref}
         className=" fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
     w-full max-w-lg md:max-w-xl lg:max-w-2xl
     rounded-lg bg-white p-6 shadow-lg
