@@ -30,8 +30,8 @@ const email = data?.data?.user?.email
         className="absolute bottom-0 inset-x-0 h-16"
         style={{ backgroundColor: "rgba(9,36,75,0.03)" }}
       >
-        <div className="flex items-center gap-2 h-full px-4 text-sm">
-          <div className="rounded-full overflow-hidden w-8 h-8 flex items-center justify-center bg-gray-200">
+        <div className="flex items-center gap-2 h-full px-4 text-sm dark:bg-zinc-800">
+          <div className="rounded-full overflow-hidden w-8 h-8 flex items-center justify-center bg-gray-200 ">
             {data?.data?.user?.avatarUrl ? (
               <img
                 src={data.data.user.avatarUrl}
