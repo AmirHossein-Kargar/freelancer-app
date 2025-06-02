@@ -5,15 +5,15 @@ import { useState } from "react";
 import CreateProjectForm from "../features/projects/CreateProjectForm";
 
 export default function Projects() {
-  const [isModalOpen, setIsModalOpen] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
   };
 
-  // const handleCloseModal = () => {
-  //   setIsModalOpen(false);
-  // };
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
 
   return (
     <div className="space-y-4">
@@ -33,7 +33,7 @@ export default function Projects() {
 
       <Modal
         open={isModalOpen}
-        // onClose={handleCloseModal}
+        onClose={handleCloseModal}
         title="Create New Project"
       >
         {<CreateProjectForm />}

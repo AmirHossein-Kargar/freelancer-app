@@ -1,13 +1,12 @@
 import { Button } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import Loading from "../../ui/Loading";
+import { PhoneNumberValidation } from "./OTPValidation";
 
-export default function SendOTPForm({
-  onSubmit,
-  phoneNumber,
-  onChange,
-  isSendOtp
-}) {
+// * This component renders a form for sending an OTP to a phone number.
+// * It uses Material UI components and custom validation logic.
+
+export default function SendOTPForm({ onSubmit, register, errors, isSendOtp }) {
   return (
     <div className="select-none">
       <div className="flex justify-center items-center">
@@ -33,8 +32,9 @@ export default function SendOTPForm({
             fullWidth
             color="primary"
             id="phone-number-input"
-            value={phoneNumber}
-            onChange={onChange}
+            {...register("phoneNumber", PhoneNumberValidation
+          )
+          }
             slotProps={{
               input: {
                 startAdornment: (
@@ -42,6 +42,8 @@ export default function SendOTPForm({
                 ),
               },
             }}
+            error={!!errors.phoneNumber}
+            helperText={errors.phoneNumber?.message}
           />
         </div>
         <div>

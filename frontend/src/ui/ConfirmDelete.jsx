@@ -2,8 +2,8 @@ import { Button } from "@mui/material";
 
 export default function ConfirmDelete({ resource, onClose, onConfirm,disabled }) {
   return (
-    <div className="">
-      <h2>Are You sure You want to delete {resource}?</h2>
+    <div>
+      <h2 className="dark:text-white">Are You sure You want to delete {resource}?</h2>
       <div className="flex justify-between items-center mt-4">
         <Button variant="text" color="error" size="small" onClick={onConfirm} disabled={disabled}>
           I'm sure

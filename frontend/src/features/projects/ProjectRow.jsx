@@ -45,11 +45,7 @@ export default function ProjectRow({ project, index }) {
             <Button
               onClick={() => setIsEditOpen(true)}
               color=""
-              sx={{
-                "&:hover": {
-                  backgroundColor: "transparent",
-                },
-              }}
+              
             >
               <EditOutlinedIcon />
             </Button>

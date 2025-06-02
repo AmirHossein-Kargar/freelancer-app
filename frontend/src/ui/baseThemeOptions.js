@@ -23,7 +23,6 @@ export const baseThemeOptions = {
       styleOverrides: {
         root: {
           borderRadius: "2rem",
-          color: "#fff"
         },
       },
     },

@@ -27,7 +27,18 @@ export default function CreateProjectForm() {
           variant="outlined"
           size="small"
         />
-        <Button type="submit" variant="contained">
+        {/* <TextField
+        size="small"
+        type="text"
+
+        /> */}
+        <Button
+          type="submit"
+          variant="contained"
+          sx={{
+            color: "#fff",
+          }}
+        >
           Submit
         </Button>
       </form>

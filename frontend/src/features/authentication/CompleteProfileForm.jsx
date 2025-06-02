@@ -15,45 +15,51 @@ import { completeProfile } from "../../services/authService";
 import toast from "react-hot-toast";
 import Loading from "../../ui/Loading";
 import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { completeProfileValidation } from "./OTPValidation";
 
 export default function CompleteProfileForm() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
   const [role, setRole] = useState("");
-
-  const [showDelayLoading, setShowDelayLoading] = useState(false);
-
+  const [showDelayLoading, setShowDelayLoading] = useState(false); // * State to control the display of a loading indicator with a delay after form submission
   const navigate = useNavigate();
+
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm();
 
   const { mutateAsync, isPending } = useMutation({
     mutationFn: completeProfile,
   });
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  try {
-    const { data } = await mutateAsync({ name, email, role });
-    toast.success(data.message);
+  const onSubmit = async (data) => {
+    try {
+      const res = await mutateAsync(data);
+      toast.success(res.data.message);
 
-    const userRole = data.user?.role?.toUpperCase();
+      const userRole = res.data.user?.role?.toUpperCase();
+      setShowDelayLoading(true);
 
+      setTimeout(() => {
+        setShowDelayLoading(false);
+        if (userRole === "OWNER") return navigate("/owner");
+        if (userRole === "FREELANCER") return navigate("/freelancer");
 
-    setShowDelayLoading(true);
-    setTimeout(() => {
-      setShowDelayLoading(false);
-
-      if (userRole === "OWNER") return navigate("/owner");
-      if (userRole === "FREELANCER") return navigate("/freelancer");
-
-      navigate("/");
-    }, 3000);
-  } catch (error) {
-    toast.error(error?.response?.data?.message || "Something went wrong");
-  }
-};
+        navigate("/");
+      }, 3000);
+    }
+     catch (error) {
+      toast.error(error?.response?.data?.message || "Something went wrong");
+    }
+    
+  };
 
   return (
-    <form action="" className="container p-8 select-none">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="container p-8 select-none"
+    >
       <section className="flex justify-center items-center">
         <img
           className="w-[300px] h-[246px]"
@@ -61,15 +67,18 @@ const handleSubmit = async (e) => {
           alt=""
         />
       </section>
+
       <h2 className="mt-10 md:text-center dark:text-white">
         Complete Your Profile
       </h2>
+
       <div className="flex flex-col gap-y-8 mt-4 md:items-center md:justify-center md:w-full">
         <TextField
           label="Full Name"
           className="md:w-1/2"
-          onChange={(e) => setName(e.target.value)}
-          value={name}
+          {...register("name", completeProfileValidation.name)}
+          error={!!errors.name}
+          helperText={errors.name?.message}
           required
           type="text"
           InputProps={{
@@ -90,9 +99,9 @@ const handleSubmit = async (e) => {
         <TextField
           label="Email"
           className="md:w-1/2"
-          onChange={(e) => setEmail(e.target.value)}
-          value={email}
-          required
+          {...register("email", completeProfileValidation.email)}
+          error={!!errors.email}
+          helperText={errors.email?.message}
           type="email"
           InputProps={{
             startAdornment: (
@@ -120,14 +129,14 @@ const handleSubmit = async (e) => {
               value="FREELANCER"
               control={<Radio />}
               label="Freelancer"
-              // checked={role === "FREELANCER"}
+              checked={role === "FREELANCER"}
             />
             <FormControlLabel
               value="OWNER"
               control={<Radio />}
               label="Client"
-              // onChange={(e) => setRole(e.target.value)}
-              // checked={role === "OWNER"}
+              onChange={(e) => setRole(e.target.value)}
+              checked={role === "OWNER"}
             />
           </RadioGroup>
         </FormControl>
@@ -139,7 +148,8 @@ const handleSubmit = async (e) => {
             variant="contained"
             sx={{ color: "#fff" }}
             className="md:w-1/2"
-            onClick={handleSubmit}
+            type="submit"
+            onClick={handleSubmit(onSubmit)}
           >
             Confirm
           </Button>
