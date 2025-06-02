@@ -10,7 +10,7 @@ export default function SendOTPForm({ onSubmit, register, errors, isSendOtp }) {
   return (
     <div className="select-none">
       <div className="flex justify-center items-center">
-        <img src="/../public/images/Image.svg" alt="" />
+        <img src="/images/Image.svg" alt="" />
       </div>
       <section className="mt-10 md:text-center space-y-4 px-2">
         <h2 className="text-lg m-0 md dark:text-white">OTP Verification</h2>

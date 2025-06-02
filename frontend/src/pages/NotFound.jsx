@@ -8,7 +8,7 @@ export default function NotFound() {
     <div className="p-8 select-none flex flex-col justify-center items-center min-h-screen">
       <section>
         <img
-          src="../../public/images/NotFound.svg"
+          src="/images/NotFound.svg"
           className="w-[320px] md:w-[640px] h-[246px]"
           alt=""
         />

@@ -63,7 +63,7 @@ export default function CompleteProfileForm() {
       <section className="flex justify-center items-center">
         <img
           className="w-[300px] h-[246px]"
-          src="../../../public/images/personal2.svg"
+       src="/images/personal2.svg"
           alt=""
         />
       </section>

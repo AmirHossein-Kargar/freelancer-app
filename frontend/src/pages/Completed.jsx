@@ -6,7 +6,7 @@ export default function Completed() {
   return (
     <div className="flex items-center justify-center flex-col text-center select-none h-screen">
       <div className="mb-12">
-        <img src="../../../public/images/completed.svg" alt="" />
+        <img src="/images/completed.svg" alt="" />
       </div>
       <div>
         <h2 className="md:text-xl dark:text-white">Success!</h2>
