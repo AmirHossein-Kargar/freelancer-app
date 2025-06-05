@@ -5,7 +5,7 @@ import useMoveBack from "../hooks/useMoveBack";
 export default function NotFound() {
   const moveBack = useMoveBack();
   return (
-    <div className="p-8 select-none flex flex-col justify-center items-center min-h-screen">
+    <div className="p-8 flex flex-col justify-center items-center min-h-screen">
       <section>
         <img
           src="/images/NotFound.svg"

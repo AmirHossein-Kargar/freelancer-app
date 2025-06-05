@@ -26,6 +26,7 @@ export default function CheckOTPForm({
   const { isPending, mutateAsync } = useMutation({
     mutationFn: checkOtp,
   });
+  const isLoading = isPending || showDelayLoading;
 
   useEffect(() => {
     const timer =
@@ -70,7 +71,7 @@ export default function CheckOTPForm({
   };
 
   return (
-    <div className="select-none py-8">
+    <div className="py-8">
       <KeyboardBackspaceIcon
         onClick={onBack}
         sx={{
@@ -84,7 +85,11 @@ export default function CheckOTPForm({
           <h2 className="dark:text-white">Verification Code</h2>
           <div className="mt-2 flex items-center md:justify-center">
             {otpResponse && <p>code sent to {otpResponse?.phoneNumber}</p>}
-            <button className="cursor-pointer ml-2" onClick={onBack}>
+            <button
+              type="button"
+              className="cursor-pointer ml-2"
+              onClick={onBack}
+            >
               <ModeOutlinedIcon
                 fontSize="small"
                 sx={{
@@ -111,43 +116,13 @@ export default function CheckOTPForm({
             renderInput={(props) => (
               <input
                 {...props}
-                style={{
-                  ...props.style,
-                  width: "2.5rem",
-                  height: "2.5rem",
-                  border: "1px solid #9ca3af",
-                  borderRadius: "10px",
-                  fontSize: "1rem",
-                  textAlign: "center",
-                  outline: "none",
-                  transition: "border-color 0.2s",
-                  background: "transparent",
-                  color:
-                    window.matchMedia &&
-                    window.matchMedia("(prefers-color-scheme: dark)").matches
-                      ? "#fff"
-                      : "#000",
-                }}
-                onFocus={(e) => {
-                  e.target.style.borderColor = "#FF8D4D";
-                  if (
-                    window.matchMedia &&
-                    window.matchMedia("(prefers-color-scheme: dark)").matches
-                  ) {
-                    e.target.style.color = "#fff";
-                  }
-                }}
-                onBlur={(e) => {
-                  e.target.style.borderColor = "#9ca3af";
-                  if (
-                    window.matchMedia &&
-                    window.matchMedia("(prefers-color-scheme: dark)").matches
-                  ) {
-                    e.target.style.color = "#fff";
-                  }
-                }}
+                className="text-black dark:text-white border border-gray-400 rounded-lg text-center text-base outline-none transition-colors duration-200 bg-transparent focus:border-primary dark:border-gray-600"
               />
             )}
+            inputStyle={{
+              width: "2.5rem",
+              height: "2rem",
+            }}
             containerStyle="flex gap-x-2 justify-center "
             renderSeparator={<span className="w-2"></span>}
           />
@@ -172,7 +147,7 @@ export default function CheckOTPForm({
         </div>
 
         <div>
-          {isPending || showDelayLoading ? (
+          {isLoading ? (
             <Loading />
           ) : (
             <Button
@@ -180,7 +155,6 @@ export default function CheckOTPForm({
               variant="contained"
               color="primary"
               type="submit"
-              fullWidth
               sx={{
                 color: "#fff",
                 width: { xs: "100%", md: "auto" },

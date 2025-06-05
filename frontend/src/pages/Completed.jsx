@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 export default function Completed() {
   const navigate = useNavigate();
   return (
-    <div className="flex items-center justify-center flex-col text-center select-none h-screen">
+    <div className="flex items-center justify-center flex-col text-center h-screen">
       <div className="mb-12">
         <img src="/images/completed.svg" alt="" />
       </div>

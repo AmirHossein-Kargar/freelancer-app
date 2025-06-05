@@ -15,17 +15,17 @@ import { completeProfile } from "../../services/authService";
 import toast from "react-hot-toast";
 import Loading from "../../ui/Loading";
 import { useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { completeProfileValidation } from "./OTPValidation";
 
 export default function CompleteProfileForm() {
-  const [role, setRole] = useState("");
   const [showDelayLoading, setShowDelayLoading] = useState(false); // * State to control the display of a loading indicator with a delay after form submission
   const navigate = useNavigate();
 
   const {
     handleSubmit,
     register,
+    control,
     formState: { errors },
   } = useForm();
 
@@ -48,22 +48,17 @@ export default function CompleteProfileForm() {
 
         navigate("/");
       }, 3000);
-    }
-     catch (error) {
+    } catch (error) {
       toast.error(error?.response?.data?.message || "Something went wrong");
     }
-    
   };
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="container p-8 select-none"
-    >
+    <form onSubmit={handleSubmit(onSubmit)} className="container p-8">
       <section className="flex justify-center items-center">
         <img
           className="w-[300px] h-[246px]"
-       src="/images/personal2.svg"
+          src="/images/personal2.svg"
           alt=""
         />
       </section>
@@ -72,14 +67,13 @@ export default function CompleteProfileForm() {
         Complete Your Profile
       </h2>
 
-      <div className="flex flex-col gap-y-8 mt-4 md:items-center md:justify-center md:w-full">
+      <div className="flex flex-col gap-y-6 mt-6 md:items-center md:justify-center md:w-full">
         <TextField
           label="Full Name"
           className="md:w-1/2"
           {...register("name", completeProfileValidation.name)}
           error={!!errors.name}
           helperText={errors.name?.message}
-          required
           type="text"
           InputProps={{
             startAdornment: (
@@ -117,28 +111,32 @@ export default function CompleteProfileForm() {
             ),
           }}
         />
+
         <FormControl>
           <FormLabel>Role</FormLabel>
-          <RadioGroup
-            row
-            value={role}
-            defaultValue="Client"
-            onChange={(e) => setRole(e.target.value)}
-          >
-            <FormControlLabel
-              value="FREELANCER"
-              control={<Radio />}
-              label="Freelancer"
-              checked={role === "FREELANCER"}
-            />
-            <FormControlLabel
-              value="OWNER"
-              control={<Radio />}
-              label="Client"
-              onChange={(e) => setRole(e.target.value)}
-              checked={role === "OWNER"}
-            />
-          </RadioGroup>
+
+          <Controller
+            name="role"
+            control={control}
+            defaultValue="OWNER"
+            rules={{ required: "Role is required" }}
+            render={({ field }) => (
+              <RadioGroup row {...field}>
+                <FormControlLabel
+                  value="FREELANCER"
+                  control={<Radio />}
+                  label="Freelancer"
+                />
+
+                <FormControlLabel
+                  value="OWNER"
+                  control={<Radio />}
+                  label="Client"
+                />
+              </RadioGroup>
+            )}
+          />
+          {errors.role && <p style={{ color: "red" }}>{errors.role.message}</p>}
         </FormControl>
 
         {showDelayLoading || isPending ? (

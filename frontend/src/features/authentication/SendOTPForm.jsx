@@ -8,7 +8,7 @@ import { PhoneNumberValidation } from "./OTPValidation";
 
 export default function SendOTPForm({ onSubmit, register, errors, isSendOtp }) {
   return (
-    <div className="select-none">
+    <div>
       <div className="flex justify-center items-center">
         <img src="/images/Image.svg" alt="" />
       </div>
