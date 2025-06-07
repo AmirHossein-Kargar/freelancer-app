@@ -10,11 +10,12 @@ export default function SendOTPForm({ onSubmit, register, errors, isSendOtp }) {
   return (
     <div>
       <div className="flex justify-center items-center">
-        <img src="/images/Image.svg" alt="" />
+        <img src="/images/authentication.svg" className="w-[209px] h-[246px]" alt="" />
       </div>
-      <section className="mt-10 md:text-center space-y-4 px-2">
-        <h2 className="text-lg m-0 md dark:text-white">OTP Verification</h2>
-        <p className="font-light text-sm leading-[1.75] mt-2 mb-10">
+
+      <section className="my-10 md:text-center space-y-2 px-2">
+        <h2 className="text-lg">OTP Verification</h2>
+        <p className="font-light text-sm leading-[1.75]">
           Enter phone number to send one time Password
         </p>
       </section>

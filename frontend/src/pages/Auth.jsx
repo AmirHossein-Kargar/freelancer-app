@@ -2,7 +2,7 @@ import AuthContainer from "../features/authentication/AuthContainer";
   
 export default function Auth() {
   return (
-    <div className="container px-8">
+    <div className="container p-8">
      <AuthContainer />
     </div>
   );

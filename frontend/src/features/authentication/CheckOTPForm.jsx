@@ -71,62 +71,60 @@ export default function CheckOTPForm({
   };
 
   return (
-    <div className="py-8">
+    <div>
+      {/* Add Transition for Back Button */}
       <KeyboardBackspaceIcon
         onClick={onBack}
         sx={{
           cursor: "pointer",
-          color: "var(--color-secondary)",
+          // color: "var(--color-title)",
+
+          "&:hover": {
+            color: "var(--color-primary)",
+          },
         }}
       />
 
       <form action="" className="mt-8" onSubmit={checkOtpHandler}>
-        <div className="md:text-center">
-          <h2 className="dark:text-white">Verification Code</h2>
-          <div className="mt-2 flex items-center md:justify-center">
-            {otpResponse && <p>code sent to {otpResponse?.phoneNumber}</p>}
+        <section className="md:text-center">
+          <h1>Verification Code</h1>
+          <div className=" flex items-center md:justify-center">
+            <p className="text-sm font-light my-4">
+              We’ve sent a code to{" "}
+              <span className="font-medium">{otpResponse?.phoneNumber}</span>
+            </p>
             <button
-              type="button"
+              type="submit"
               className="cursor-pointer ml-2"
               onClick={onBack}
             >
-              <ModeOutlinedIcon
-                fontSize="small"
-                sx={{
-                  color: {
-                    xs: "inherit",
-                    "@media (prefers-color-scheme: dark)": {
-                      color: "#fff",
-                    },
-                  },
-                }}
-                className="dark:text-white"
-              />
+              <ModeOutlinedIcon fontSize="small" sx={{ fontSize: "15px " }} />
             </button>
           </div>
-          <p className="text-sm font-light my-4">
-            We have sent the verification code to your PhoneNumber
-          </p>
-        </div>
-        <div className="mb-4 ">
-          <OTPInput
-            value={otp}
-            onChange={setOtp}
-            numInputs={6}
-            renderInput={(props) => (
-              <input
-                {...props}
-                className="text-black dark:text-white border border-gray-400 rounded-lg text-center text-base outline-none transition-colors duration-200 bg-transparent focus:border-primary dark:border-gray-600"
-              />
-            )}
-            inputStyle={{
-              width: "2.5rem",
-              height: "2rem",
-            }}
-            containerStyle="flex gap-x-2 justify-center "
-            renderSeparator={<span className="w-2"></span>}
-          />
-          <div className="flex justify-center items-center mt-4">
+        </section>
+
+        <div className="space-y-6">
+          <div>
+            <OTPInput
+              value={otp}
+              onChange={setOtp}
+              numInputs={6}
+              containerStyle="flex gap-2 justify-center"
+              renderInput={(props) => (
+                <input
+                  {...props}
+                  className="text-black transition-all-custom border border-secondary rounded-lg text-center text-base outline-none  bg-transparent focus:border-primary  hover:border-primary"
+                />
+              )}
+              inputStyle={{
+                width: "2.5rem",
+                height: "2rem",
+              }}
+              renderSeparator={<span className="w-1"></span>}
+            />
+          </div>
+
+          <div className="flex justify-center items-center mb-4">
             {time > 0 ? (
               <p>{time} Remaining</p>
             ) : (
@@ -134,11 +132,7 @@ export default function CheckOTPForm({
                 size="small"
                 onClick={onResendOtp}
                 color="primary"
-                sx={{
-                  "&:hover": {
-                    backgroundColor: "transparent",
-                  },
-                }}
+                variant="text"
               >
                 Send Again
               </Button>
@@ -146,7 +140,7 @@ export default function CheckOTPForm({
           </div>
         </div>
 
-        <div>
+        <div className="text-center">
           {isLoading ? (
             <Loading />
           ) : (
@@ -158,9 +152,7 @@ export default function CheckOTPForm({
               sx={{
                 color: "#fff",
                 width: { xs: "100%", md: "auto" },
-                display: "block",
-                marginLeft: { md: "auto", xs: 0 },
-                marginRight: { md: "auto", xs: 0 },
+                mx: "auto",
               }}
             >
               Confirm

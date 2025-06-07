@@ -1,13 +1,17 @@
 @import "tailwindcss";
 @import "./typography.css";
 
-
+@theme {
+  --color-primary: #4a6dff; /* main brand color */
+  --color-primary-dark: #3f5ee0; /* darker version of primary */
+  --color-secondary: #2a2d53; /* deep secondary base */
+  --color-title: #3f4264; /* from text-title */
+  --color-paragraph: #6a6c87; /* from text-base */
+}
 
 @layer base {
   body {
     overflow: hidden;
-  }
-  body {
     font-family: "Inter";
   }
   h1,
@@ -21,13 +25,12 @@
     color: var(--color-paragraph);
     font-family: "Poppins";
   }
-  
 }
 
-@theme {
-  --color-primary: #ff8d4d;
-  --color-primary-dark: #e6763d;
-  --color-secondary: #cecece;
-  --color-title: #323232;
-  --color-paragraph: #b6b6b6;
+@layer utilities {
+  .transition-all-custom {
+    transition-property: all;
+    transition-duration: 200ms;
+    transition-timing-function: ease-in-out;
+  }
 }
