@@ -5,22 +5,24 @@ import useMoveBack from "../hooks/useMoveBack";
 export default function NotFound() {
   const moveBack = useMoveBack();
   return (
-    <div className="p-8 flex flex-col justify-center items-center min-h-screen">
+    <div className="p-6 md:p-8 flex flex-col justify-center items-center min-h-screen space-y-6">
       <section>
         <img
           src="/images/NotFound.svg"
           className="w-[320px] md:w-[640px] h-[246px]"
-          alt=""
+          alt="not found"
         />
       </section>
-      <section className="text-center my-8 md:my-10 space-y-4">
-        <h2 className="dark:text-white">404 Not Found</h2>
-        <p>Oops! This page doesn’t exist.</p>
+
+      <section className="text-center my-8 md:my-10 space-y-2">
+        <h2 className="text-2xl">404 - Page Not Found</h2>
+        <p>Sorry, the page you’re looking for doesn’t exist.</p>
       </section>
+
       <Button
-        variant="outlined"
-        className="w-full md:w-auto"
+        variant="contained"
         onClick={moveBack}
+        className="w-full md:w-48 gap-1"
       >
         GO BACK <KeyboardReturnIcon fontSize="small" />
       </Button>
