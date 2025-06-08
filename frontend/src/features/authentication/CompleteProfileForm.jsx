@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Button,
   FormControl,
@@ -14,13 +13,12 @@ import { useMutation } from "@tanstack/react-query";
 import { completeProfile } from "../../services/authService";
 import toast from "react-hot-toast";
 import Loading from "../../ui/Loading";
-import { useNavigate } from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
 import { completeProfileValidation } from "./OTPValidation";
+import UseHandleUserRedirect from "../../utils/handleUserRedirect";
 
 export default function CompleteProfileForm() {
-  const [showDelayLoading, setShowDelayLoading] = useState(false); // * State to control the display of a loading indicator with a delay after form submission
-  const navigate = useNavigate();
+
 
   const {
     handleSubmit,
@@ -33,21 +31,13 @@ export default function CompleteProfileForm() {
     mutationFn: completeProfile,
   });
 
+  const { handleRedirect, loading } = UseHandleUserRedirect();  // * Custom hook to manage user redirection based on their role and activation status
+
   const onSubmit = async (data) => {
     try {
       const res = await mutateAsync(data);
       toast.success(res.data.message);
-
-      const userRole = res.data.user?.role?.toUpperCase();
-      setShowDelayLoading(true);
-
-      setTimeout(() => {
-        setShowDelayLoading(false);
-        if (userRole === "OWNER") return navigate("/owner");
-        if (userRole === "FREELANCER") return navigate("/freelancer");
-
-        navigate("/");
-      }, 3000);
+      handleRedirect(res.data.user);
     } catch (error) {
       toast.error(error?.response?.data?.message || "Something went wrong");
     }
@@ -58,14 +48,12 @@ export default function CompleteProfileForm() {
       <section className="flex justify-center items-center">
         <img
           className="w-[300px] h-[246px]"
-          src="/images/personal2.svg"
+          src="/images/complete-profile.svg"
           alt=""
         />
       </section>
 
-      <h2 className="mt-10 md:text-center dark:text-white">
-        Complete Your Profile
-      </h2>
+      <h2 className="mt-10 md:text-center">Complete Your Profile</h2>
 
       <div className="flex flex-col gap-y-6 mt-6 md:items-center md:justify-center md:w-full">
         <TextField
@@ -139,7 +127,7 @@ export default function CompleteProfileForm() {
           {errors.role && <p style={{ color: "red" }}>{errors.role.message}</p>}
         </FormControl>
 
-        {showDelayLoading || isPending ? (
+        {loading || isPending ? (
           <Loading />
         ) : (
           <Button
@@ -147,7 +135,6 @@ export default function CompleteProfileForm() {
             sx={{ color: "#fff" }}
             className="md:w-1/2"
             type="submit"
-            onClick={handleSubmit(onSubmit)}
           >
             Confirm
           </Button>

@@ -5,13 +5,12 @@ import OTPInput from "react-otp-input";
 import { useMutation } from "@tanstack/react-query";
 import { checkOtp } from "../../services/authService";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
 import Loading from "../../ui/Loading";
 import ModeOutlinedIcon from "@mui/icons-material/ModeOutlined";
+import UseHandleUserRedirect from "../../utils/handleUserRedirect";
 
 // * OTP TIMER
 const RESEND_OTP = 90; // * 90 seconds for OTP resend
-const otpTimeout = 3000; // * 3 seconds delay for navigation
 
 export default function CheckOTPForm({
   phoneNumber,
@@ -19,15 +18,12 @@ export default function CheckOTPForm({
   onResendOtp,
   otpResponse,
 }) {
-  const navigate = useNavigate();
   const [otp, setOtp] = useState("");
   const [time, setTime] = useState(RESEND_OTP);
-  const [showDelayLoading, setShowDelayLoading] = useState(false);
 
   const { isPending, mutateAsync } = useMutation({
     mutationFn: checkOtp,
   });
-  const isLoading = isPending || showDelayLoading;
 
   useEffect(() => {
     const timer =
@@ -40,14 +36,8 @@ export default function CheckOTPForm({
     };
   }, [time]);
 
-  // * Navigate with a delay to show loading state and navigation
-  const navigateWithDelay = (path) => {
-    setShowDelayLoading(true);
-    setTimeout(() => {
-      setShowDelayLoading(false);
-      navigate(path);
-    }, otpTimeout);
-  };
+  const { handleRedirect, loading } = UseHandleUserRedirect(3000);
+  const isLoading = isPending || loading;
 
   // * Handles OTP verification, navigates user based on activation status, and displays notifications.
   const checkOtpHandler = async (e) => {
@@ -55,24 +45,11 @@ export default function CheckOTPForm({
     try {
       const { data } = await mutateAsync({ phoneNumber, otp });
       toast.success(data.message);
-      const { user } = data;
-
-      // * if user is not active, navigate to complete profile
-      if (!data.user.isActive) {
-        navigateWithDelay("/completed");
-        return;
-      }
-
-      if (user.role === "OWNER") return navigateWithDelay("/owner");
-      if (user.role === "FREELANCER") return navigateWithDelay("/freelancer");
-      // * fallback
-      navigateWithDelay("/");
+      handleRedirect(data.user);
     } catch (error) {
       toast.error(error?.response?.data?.message);
     }
   };
-
-
 
   return (
     <main>
