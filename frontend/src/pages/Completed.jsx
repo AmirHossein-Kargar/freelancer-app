@@ -4,27 +4,29 @@ import { useNavigate } from "react-router-dom";
 export default function Completed() {
   const navigate = useNavigate();
   return (
-    <div className="flex items-center justify-center flex-col text-center h-screen">
-      <div className="mb-12">
-        <img src="/images/completed.svg" alt="" />
-      </div>
+    <div className="flex items-center justify-center flex-col text-center min-h-screen space-y-8 md:space-y-10 lg:space-y-12">
       <div>
-        <h2 className="md:text-xl dark:text-white">Success!</h2>
-        <p className="text-sm mt-2 mb-8 w-[300px] md:w-auto">
+        <img
+          src="/images/completed.svg"
+          className="w-[209px] h-[246px]"
+          alt=""
+        />
+      </div>
+      <div className="space-y-2">
+        <h2 className="md:text-xl">Success!</h2>
+        <p className="text-sm max-w-xs md:max-w-md mx-auto">
           Congratulations! You have been successfully authenticated
         </p>
       </div>
-      <Button
-        onClick={() => navigate("/complete-profile")}
-        size="large"
-        variant="contained"
-        sx={{
-          color: "#fff",
-          width: { xs: "100%", md: "auto" },
-        }}
-      >
-        Complete Profile
-      </Button>
+      <div>
+        <Button
+          onClick={() => navigate("/complete-profile")}
+          size="large"
+          variant="contained"
+        >
+          Complete Profile
+        </Button>
+      </div>
     </div>
   );
 }

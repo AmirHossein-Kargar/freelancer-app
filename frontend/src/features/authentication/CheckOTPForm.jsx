@@ -10,7 +10,8 @@ import Loading from "../../ui/Loading";
 import ModeOutlinedIcon from "@mui/icons-material/ModeOutlined";
 
 // * OTP TIMER
-const RESEND_OTP = 90;
+const RESEND_OTP = 90; // * 90 seconds for OTP resend
+const otpTimeout = 3000; // * 3 seconds delay for navigation
 
 export default function CheckOTPForm({
   phoneNumber,
@@ -39,6 +40,15 @@ export default function CheckOTPForm({
     };
   }, [time]);
 
+  // * Navigate with a delay to show loading state and navigation
+  const navigateWithDelay = (path) => {
+    setShowDelayLoading(true);
+    setTimeout(() => {
+      setShowDelayLoading(false);
+      navigate(path);
+    }, otpTimeout);
+  };
+
   // * Handles OTP verification, navigates user based on activation status, and displays notifications.
   const checkOtpHandler = async (e) => {
     e.preventDefault();
@@ -49,56 +59,53 @@ export default function CheckOTPForm({
 
       // * if user is not active, navigate to complete profile
       if (!data.user.isActive) {
-        setShowDelayLoading(true);
-        setTimeout(() => {
-          setShowDelayLoading(false);
-          navigate("/completed");
-        }, 3000);
+        navigateWithDelay("/completed");
         return;
       }
 
-      setShowDelayLoading(true);
-      setTimeout(() => {
-        setShowDelayLoading(false);
-        if (user.role === "OWNER") return navigate("/owner");
-        if (user.role === "FREELANCER") return navigate("/freelancer");
-        // * fallback
-        navigate("/");
-      }, 3000);
+      if (user.role === "OWNER") return navigateWithDelay("/owner");
+      if (user.role === "FREELANCER") return navigateWithDelay("/freelancer");
+      // * fallback
+      navigateWithDelay("/");
     } catch (error) {
       toast.error(error?.response?.data?.message);
     }
   };
 
+
+
   return (
-    <div>
-      {/* Add Transition for Back Button */}
+    <main>
       <KeyboardBackspaceIcon
+        titleAccess="Go Back"
+        aria-label="Go Back"
         onClick={onBack}
         sx={{
           cursor: "pointer",
-          // color: "var(--color-title)",
-
           "&:hover": {
             color: "var(--color-primary)",
           },
         }}
       />
 
-      <form action="" className="mt-8" onSubmit={checkOtpHandler}>
+      <form className="mt-8" onSubmit={checkOtpHandler}>
         <section className="md:text-center">
           <h1>Verification Code</h1>
           <div className=" flex items-center md:justify-center">
             <p className="text-sm font-light my-4">
               We’ve sent a code to{" "}
-              <span className="font-medium">{otpResponse?.phoneNumber}</span>
+              <span className="font-bold">{otpResponse?.phoneNumber}</span>
             </p>
             <button
-              type="submit"
+              type="button"
               className="cursor-pointer ml-2"
               onClick={onBack}
             >
-              <ModeOutlinedIcon fontSize="small" sx={{ fontSize: "15px " }} />
+              <ModeOutlinedIcon
+                fontSize="small"
+                sx={{ fontSize: "15px " }}
+                aria-label="Edit Phone Number"
+              />
             </button>
           </div>
         </section>
@@ -113,7 +120,7 @@ export default function CheckOTPForm({
               renderInput={(props) => (
                 <input
                   {...props}
-                  className="text-black transition-all-custom border border-secondary rounded-lg text-center text-base outline-none  bg-transparent focus:border-primary  hover:border-primary"
+                  className="text-black transition-all-custom border border-secondary rounded-lg text-center text-base outline-none bg-transparent focus:border-primary hover:border-primary"
                 />
               )}
               inputStyle={{
@@ -124,7 +131,7 @@ export default function CheckOTPForm({
             />
           </div>
 
-          <div className="flex justify-center items-center mb-4">
+          <div className="flex justify-center items-center mb-2">
             {time > 0 ? (
               <p>{time} Remaining</p>
             ) : (
@@ -160,6 +167,6 @@ export default function CheckOTPForm({
           )}
         </div>
       </form>
-    </div>
+    </main>
   );
 }
