@@ -17,5 +17,5 @@ export function completeProfile(data) {
 }
 // * Get user profile
 export function getUser() {
-  return http.get("/user/profile").then((data) => data.data);
+  return http.get("/user/profile").then((data) => data.data)
 }

@@ -7,6 +7,7 @@
   --color-secondary: #2a2d53; /* deep secondary base */
   --color-title: #3f4264; /* from text-title */
   --color-paragraph: #6a6c87; /* from text-base */
+  --color-surface: rgba(9,36,75,0.03);
 }
 
 @layer base {
@@ -33,4 +34,14 @@
     transition-duration: 200ms;
     transition-timing-function: ease-in-out;
   }
+  .transition-color-custom {
+    transition-property: color;
+    transition-duration: 200ms;
+    transition-timing-function: ease-in-out;
+  }
+}
+
+#_rht_toaster {
+  inset: auto !important;
+  margin: 0 !important;
 }

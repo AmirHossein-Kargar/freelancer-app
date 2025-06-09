@@ -1,9 +1,13 @@
-import useUser from "../features/authentication/useUser";
+import MenuIcon from "@mui/icons-material/Menu";
 
-export default function Header() {
-    const {data} = useUser();
-    
+export default function Header({ onMenuClick }) {
+
   return (
-      <section>App Header</section>
-  )
+    <div className="flex items-center justify-between">
+      <button className="md:hidden cursor-pointer hover:text-primary transition-color-custom " onClick={onMenuClick}>
+        <MenuIcon />
+      </button>
+      <h1 className="text-xl font-bold">Header</h1>
+    </div>
+  );
 }

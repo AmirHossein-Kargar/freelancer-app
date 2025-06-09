@@ -1,7 +1,7 @@
 export default function Table({ children }) {
   return (
     <div className="relative overflow-x-auto">
-      <table className="min-w-full w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+      <table className="min-w-full w-full text-sm text-left rtl:text-right">
         {children}
       </table>
     </div>
@@ -10,7 +10,7 @@ export default function Table({ children }) {
 
 function TableHeader({ children }) {
   return (
-    <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+    <thead className="text-xs uppercase bg-surface">
       <tr>{children}</tr>
     </thead>
   );
@@ -21,11 +21,7 @@ function TableBody({ children }) {
 }
 
 function TableRow({ children }) {
-  return (
-    <tr className="bg-white dark:bg-gray-800 border-b dark:border-gray-700 border-gray-200">
-      {children}
-    </tr>
-  );
+  return <tr className="bg-surface">{children}</tr>;
 }
 
 Table.Header = TableHeader;

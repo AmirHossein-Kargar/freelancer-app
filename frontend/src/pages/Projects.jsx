@@ -18,12 +18,11 @@ export default function Projects() {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h2 className="dark:text-white">Projects</h2>
+        <h2>Projects</h2>
         <Button
           variant="contained"
           size="small"
           color="primary"
-          sx={{ color: "#fff" }}
           onClick={handleOpenModal}
         >
           New Project

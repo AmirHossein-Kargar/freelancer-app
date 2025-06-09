@@ -24,29 +24,24 @@ export default function ProjectRow({ project, index }) {
       <td className="px-6 py-4">{formatDate(project.deadline)}</td>
       <td className="px-6 py-4">
         <div className="flex flex-wrap gap-2">
-          {project.tags.map((tag) => (
-            <span className="border px-2 py-1 rounded-full" key={tag}>
+          {project.tags.slice(0, 3).map((tag) => (
+            <span className="bg-primary/10 px-3 py-1 rounded-full" key={tag}>
               {tag}
             </span>
           ))}
+          {project.tags.length > 3 && (
+            <span className="text-xs">+{project.tags.length - 3} more</span>
+          )}
         </div>
       </td>
       <td className="px-6 py-4">{project.freelancerName || "---"}</td>
       <td className="px-6 py-4">
-        {project.status == "OPEN" ? (
-          <span className="text-green-500">Open</span>
-        ) : (
-          <span className="text-red-500">Closed</span>
-        )}
+        <StatusBadge status={project.status} />
       </td>
       <td className="text-center">
         <div className="flex justify-center">
           <>
-            <Button
-              onClick={() => setIsEditOpen(true)}
-              color=""
-              
-            >
+            <Button onClick={() => setIsEditOpen(true)}>
               <EditOutlinedIcon />
             </Button>
             <Modal
@@ -59,15 +54,7 @@ export default function ProjectRow({ project, index }) {
           </>
 
           <>
-            <Button
-              onClick={() => setIsDeleteOpen(true)}
-              color="error"
-              sx={{
-                "&:hover": {
-                  backgroundColor: "transparent",
-                },
-              }}
-            >
+            <Button onClick={() => setIsDeleteOpen(true)} color="error">
               <DeleteOutlineOutlinedIcon />
             </Button>
 
@@ -79,9 +66,11 @@ export default function ProjectRow({ project, index }) {
               <ConfirmDelete
                 resource={project.title}
                 onClose={() => setIsDeleteOpen(false)}
-                onConfirm={() => removeProject(project._id, {
-                  onSuccess: () => setIsDeleteOpen(false)
-                })}
+                onConfirm={() =>
+                  removeProject(project._id, {
+                    onSuccess: () => setIsDeleteOpen(false),
+                  })
+                }
                 disabled={isDeleting}
               />
             </Modal>
@@ -90,4 +79,14 @@ export default function ProjectRow({ project, index }) {
       </td>
     </Table.Row>
   );
+}
+
+function StatusBadge({ status }) {
+  const base = "px-3 py-1 rounded-full text-xs";
+  const statusClasses = {
+    OPEN: "bg-green-300 text-green-900",
+    CLOSED: "bg-red-300 text-red-900",
+  };
+
+  return <span className={`${base} ${statusClasses[status]}`}>{status}</span>;
 }
