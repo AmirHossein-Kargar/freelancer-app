@@ -1,4 +1,4 @@
-import { Button, TextField } from "@mui/material";
+import { Button, InputAdornment, TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { projectValidation } from "./projectValidation";
 
@@ -13,10 +13,10 @@ export default function CreateProjectForm() {
   };
 
   return (
-    <div className="flex items-center justify-center">
+    <div className="flex items-center justify-center p-4">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col gap-4 w-[300px]"
+        className="flex flex-col gap-4  w-full max-w-xs"
       >
         <TextField
           label="Title"
@@ -27,18 +27,40 @@ export default function CreateProjectForm() {
           variant="outlined"
           size="small"
         />
-        {/* <TextField
-        size="small"
-        type="text"
-
-        /> */}
-        <Button
-          type="submit"
-          variant="contained"
-          sx={{
-            color: "#fff",
+        {/* Description */}
+        <TextField
+          size="small"
+          label="Description"
+          multiline
+          rows={4}
+          placeholder="Describe your project briefly..."
+          {...register("description", projectValidation.description)}
+          error={!!errors.description}
+          helperText={errors.description?.message}
+        />
+        {/* Budget */}
+        <TextField
+          variant="outlined"
+          label="Budget"
+          size="small"
+          type="number"
+          slotProps={{
+            input: {
+              startAdornment: (
+                <InputAdornment position="start">$</InputAdornment>
+              ),
+            },
           }}
-        >
+          onKeyDown={(e) => {
+            if (["-", "e", "E", "+"].includes(e.key)) {
+              e.preventDefault();
+            }
+          }}
+          {...register("budget", projectValidation.budget)}
+          error={!!errors.budget}
+          helperText={errors.budget?.message}
+        />
+        <Button type="submit" variant="contained">
           Submit
         </Button>
       </form>
